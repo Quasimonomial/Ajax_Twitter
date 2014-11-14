@@ -25,14 +25,18 @@ $.FollowToggle = function (el) {
 };
 
 $.FollowToggle.prototype.bindListeners = function() {
-  this.$el.on("click", this.handleClick.bind(this))
+  this.$el.on("click", this.handleClick.bind(this));
 }
 
 $.FollowToggle.prototype.render = function () {
-  if (this.followState == "followed") {
-    this.$el.html("Unfollow!");
-  } else if (this.followState == "unfollowed"){
-    this.$el.html("Follow!");
+  if(this.followState === "following" || this.followState === "unfollowing"){
+    this.$el.prop("disabled", true)
+  }
+  
+  if (this.followState === "followed") {
+    this.$el.html("Unfollow!").prop("disabled", false);
+  } else if (this.followState === "unfollowed"){
+    this.$el.html("Follow!").prop("disabled", false);
   }
 };
 
@@ -40,11 +44,13 @@ $.FollowToggle.prototype.handleClick = function (event) {
   event.preventDefault();
   var that = this;
   var id = this.userId;
-  var urlPlace = '/users/' + id +'/follow'
+  var urlPlace = '/users/' + id +'/follow';
   
   var requestData = { user_id: this.userId }
    
   if (this.followState === "unfollowed") {
+    this.followState = "following";
+    this.render();
     $.ajax(urlPlace, {
       type: 'POST',
       data: requestData,
@@ -56,10 +62,12 @@ $.FollowToggle.prototype.handleClick = function (event) {
         that.render();
       },
       error: function() {
-        console.log("fail at following :'(")
+        console.log("fail at following :'(");
       }
     })
   } else if(this.followState === "followed") {
+    this.followState = "unfollowing";
+    this.render();
     $.ajax(urlPlace, {
       type: 'DELETE',
       dataType: 'json',
@@ -70,7 +78,7 @@ $.FollowToggle.prototype.handleClick = function (event) {
         that.render();
       },
       error: function() {
-        console.log("fail at unfollwoing :'(")
+        console.log("fail at unfollwoing :'(");
       }
     })
   }
@@ -86,3 +94,6 @@ $.fn.followToggle = function () {
 $(function () {
   $("button.follow-toggle").followToggle();
 });
+
+
+
