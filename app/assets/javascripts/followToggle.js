@@ -1,5 +1,3 @@
-
-
 $.FollowToggle = function (el) {
   this.$el = $(el);
   this.userId = this.$el.attr("data-user-id");
