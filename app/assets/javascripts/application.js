@@ -44,10 +44,11 @@ $.FollowToggle.prototype.handleClick = function (event) {
   
   var requestData = { user_id: this.userId }
    
-  if (this.followState = "unfollowed") {
+  if (this.followState === "unfollowed") {
     $.ajax(urlPlace, {
       type: 'POST',
       data: requestData,
+      dataType: 'json',
       success: function( resp ) {
         that.$el.attr('data-initial-follow-state', "followed");
         that.followState = "followed";
@@ -55,12 +56,25 @@ $.FollowToggle.prototype.handleClick = function (event) {
         that.render();
       },
       error: function() {
-        console.log("fail :'(")
+        console.log("fail at following :'(")
       }
     })
-  } else if(true) {
-    console.log("YEEEE");
+  } else if(this.followState === "followed") {
+    $.ajax(urlPlace, {
+      type: 'DELETE',
+      dataType: 'json',
+      success: function( resp ) {
+        that.$el.attr('data-initial-follow-state', "unfollowed");
+        that.followState = "unfollowed";
+        console.log("New Follow State: " + that.followState);
+        that.render();
+      },
+      error: function() {
+        console.log("fail at unfollwoing :'(")
+      }
+    })
   }
+  
 }
 
 $.fn.followToggle = function () {
