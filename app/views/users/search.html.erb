@@ -1,0 +1,15 @@
+<h1>Search!</h1>
+
+<!--value query -->
+<div class="users-search">
+  <input type="text">
+  <ul class="users">
+</div>
+<ul>
+  <% @users.each do |user| %>
+    <li>
+      <%= link_to user.username, user_url(user) %>
+      <%= render "follows/form", user: user %>
+    </li>
+  <% end %>
+</ul>
