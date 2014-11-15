@@ -36,6 +36,8 @@ $.UsersSearch.prototype.renderResults = function(resp) {
     console.log(user);
   }
   
+  this.$ul.html("");
+  
   resp.forEach(function(user){
     renderUser(user);
   });
