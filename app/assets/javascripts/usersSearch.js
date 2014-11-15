@@ -17,20 +17,29 @@ $.UsersSearch.prototype.handleInput = function(event){
   var formData = { query: this.$input.val() };
   $.ajax("/users/search", {
     type: 'GET',
-    datatype: "json",
+    dataType: "json",
     data: formData,
     success: function( resp ) {
       console.log("successful query");
       that.renderResults(resp);
     },
     error: function() {
-      console.log("You're both fucking failures and will never amount to anything.")
+      console.log("You're both fucking failures and will never amount to anything.");
     }
   })
 }
 
 $.UsersSearch.prototype.renderResults = function(resp) {
-  console.log(resp)
+  var that = this;
+  var renderUser = function(user){
+    that.$ul.append("<li>" + user.username + "</li>")
+    console.log(user);
+  }
+  
+  resp.forEach(function(user){
+    renderUser(user);
+  });
+  
 }
 
 
