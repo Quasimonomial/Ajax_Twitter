@@ -24,7 +24,7 @@ $.UsersSearch.prototype.handleInput = function(event){
       that.renderResults(resp);
     },
     error: function() {
-      console.log("You're both fucking failures and will never amount to anything.");
+      console.log("Lame ass query try again.");
     }
   })
 }
@@ -32,7 +32,13 @@ $.UsersSearch.prototype.handleInput = function(event){
 $.UsersSearch.prototype.renderResults = function(resp) {
   var that = this;
   var renderUser = function(user){
+    var followerString = user.followed ? "followed" : "unfollowed"; 
+      
+    var options = {userId: user.id, followState: followerString};
     that.$ul.append("<li>" + user.username + "</li>")
+    var button = '<button type="button" id="button_' + user.id + '" class="follow-toggle"></button>'
+    that.$ul.append(button);
+    that.$ul.append(new $.FollowToggle('#button_'+ user.id, options));
     console.log(user);
   }
   
@@ -43,21 +49,9 @@ $.UsersSearch.prototype.renderResults = function(resp) {
   });
   
 }
-
-
-
-// type: 'POST',
-// data: requestData,
-// dataType: 'json',
-// success: function( resp ) {
-//   that.$el.attr('data-initial-follow-state', "followed");
-//   that.followState = "followed";
-//   console.log("New Follow State: " + that.followState);
-//   that.render();
-// },
-// error: function() {
-//   console.log("fail at following :'(");
-// }
+//
+//
+// <button type="button" class="follow-toggle" data-user-id="<%= user.id %>" data-initial-follow-state="<%= current_user.follows?(user) ? "followed" : "unfollowed" %>"></button>
 
 
 

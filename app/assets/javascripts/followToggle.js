@@ -1,7 +1,7 @@
-$.FollowToggle = function (el) {
+$.FollowToggle = function (el, options) {
   this.$el = $(el);
-  this.userId = this.$el.attr("data-user-id");
-  this.followState = this.$el.attr("data-initial-follow-state");
+  this.userId = this.$el.attr("data-user-id") || options.userId;
+  this.followState = this.$el.attr("data-initial-follow-state") || options.followState;
   this.render();
   this.bindListeners();
 };
@@ -69,7 +69,7 @@ $.FollowToggle.prototype.handleClick = function (event) {
 
 $.fn.followToggle = function () {
   return this.each(function () {
-    new $.FollowToggle(this);
+    new $.FollowToggle(this, options);
   });
 };
 
